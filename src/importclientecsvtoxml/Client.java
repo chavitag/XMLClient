@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -121,6 +122,41 @@ public class Client  {
         StringReader sr=new StringReader(toXMLString());
         return doc.parse(new InputSource(sr));
     }
+    
+    public Document buildXMLDocument() throws ParserConfigurationException {
+        DocumentBuilder db=DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc=db.newDocument();
+        Element raiz;
+        Element node;
+        
+        doc.setXmlVersion("1.0");
+        raiz=doc.createElement("datos_cliente");
+        doc.appendChild(raiz);
+        
+        raiz.appendChild(createXMLNode(doc,"id",dni));
+        raiz.appendChild(createXMLNode(doc,"nombre",firstname));
+        raiz.appendChild(createXMLNode(doc,"apellidos",lastname));
+        
+        node=doc.createElement("telefonos");
+        raiz.appendChild(node);
+        
+        for(String tel:localPhones.values()) {
+            node.appendChild(createXMLNode(doc,"telefono",tel));
+        }
+      
+        for(String tel:internationalPhones.values()) {
+            node.appendChild(createXMLNode(doc,"telefono",tel));
+        }
+        
+        node=doc.createElement("mails");
+        raiz.appendChild(node);
+        
+        for(String mail:emails.values()) {
+            node.appendChild(createXMLNode(doc,"mail",mail));
+        }
+        
+        return doc;
+    }
         
     private static String cleanQuotes(String str) throws ScanException {
         Pattern pattern = Pattern.compile("\"([^\"]*)\"");
@@ -147,5 +183,9 @@ public class Client  {
         return true;
     }
 
-
+    private static Element createXMLNode(Document doc, String name,String content) {
+        Element n=doc.createElement(name);
+        n.setTextContent(content);
+        return n;
+    }
 }

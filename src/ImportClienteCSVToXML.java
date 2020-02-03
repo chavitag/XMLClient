@@ -1,7 +1,14 @@
 
 import importclientecsvtoxml.Client;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,11 +37,43 @@ public class ImportClienteCSVToXML {
             try {
                 cl = Client.scanCSVLine(str);
                 System.out.println(cl.toXMLString());
-                cl.toXMLDocument();
+                writeXmlDocumentToConsole(cl.toXMLDocument());
+                writeXmlDocumentToConsole(cl.buildXMLDocument());
+
             } catch (Exception ex) {
                 System.out.println("ERROR: "+ex.getMessage());
             }
         }
     }
+    
+        public static void writeXmlDocumentToConsole(Document xmlDocument)
+{
+    TransformerFactory tf = TransformerFactory.newInstance();
+    Transformer transformer;
+    try {
+        transformer = tf.newTransformer();
+         
+        // Uncomment if you do not require XML declaration
+        // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+         
+        //A character stream that collects its output in a string buffer, 
+        //which can then be used to construct a string.
+        StringWriter writer = new StringWriter();
+ 
+        //transform document to string 
+        transformer.transform(new DOMSource(xmlDocument), new StreamResult(writer));
+ 
+        String xmlString = writer.getBuffer().toString();   
+        System.out.println(xmlString);                      //Print to console or logs
+    } 
+    catch (TransformerException e) 
+    {
+        e.printStackTrace();
+    }
+    catch (Exception e) 
+    {
+        e.printStackTrace();
+    }
+}
     
 }
