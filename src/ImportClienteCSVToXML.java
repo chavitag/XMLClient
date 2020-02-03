@@ -30,6 +30,7 @@ public class ImportClienteCSVToXML {
             try {
                 cl = Client.scanCSVLine(str);
                 System.out.println(cl.toXMLString());
+                cl.toXMLDocument();
             } catch (Exception ex) {
                 System.out.println("ERROR: "+ex.getMessage());
             }

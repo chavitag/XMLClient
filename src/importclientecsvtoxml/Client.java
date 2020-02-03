@@ -5,12 +5,19 @@
  */
 package importclientecsvtoxml;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class Client  {
     private String dni;
@@ -109,11 +116,12 @@ public class Client  {
         return xml.toString();
     }
     
-    public Document toXMLDocument() {
-        return null;
+    public Document toXMLDocument() throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder doc=DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        StringReader sr=new StringReader(toXMLString());
+        return doc.parse(new InputSource(sr));
     }
-    
-    
+        
     private static String cleanQuotes(String str) throws ScanException {
         Pattern pattern = Pattern.compile("\"([^\"]*)\"");
         Matcher matcher = pattern.matcher(str);
