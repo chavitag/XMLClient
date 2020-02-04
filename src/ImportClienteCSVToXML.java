@@ -1,8 +1,6 @@
 
 import importclientecsvtoxml.Client;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -10,20 +8,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 /**
  *
  * @author ASIR\xavi
  */
 public class ImportClienteCSVToXML {
 
-    /**
+    /** TEST
      * @param args the command line arguments
      */
     public static void main(String[] args) {

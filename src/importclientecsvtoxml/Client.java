@@ -62,12 +62,39 @@ public class Client  {
         emails.put(email.toLowerCase(),email);
     }
     
-    public boolean verificaDNI(String dni) {
+    public static boolean verificaDNI(String dni) {
+        char[] l={'T','R','W','A','G','M','Y','F','P','D','X','B','N','J','Z','S','Q','V','H','L','C','K','E'};
+        char firstchar,lastchar;
+        String number;
+        int length=dni.length();
+        int val;
+        
+        if (length!=9) return false;
+        firstchar=dni.charAt(0);
+        lastchar=dni.charAt(length-1);
+        // NIE
+        if (!Character.isDigit(firstchar)) {
+            val=0;
+            switch(Character.toUpperCase(firstchar)) {
+                case 'Z': val++; 
+                case 'Y': val++;
+                case 'X': break;
+                default: return false;
+            }
+            dni=val+dni.substring(1);
+        } 
+        number=dni.substring(0,length-1);
+        try {
+            val=Integer.parseInt(number);
+            if (l[val%23]!=lastchar) return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
         return true;
     }
     
     public static Client scanCSVLine(String line) throws Exception, ScanException {
-        Client cl=null;
+        Client cl;
         String[] fields=line.split(",");
         String f;
         
