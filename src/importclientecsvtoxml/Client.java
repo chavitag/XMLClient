@@ -122,6 +122,10 @@ public class Client  {
         return dni+": "+firstname+" "+lastname;
     }
     
+    /**
+     * Crea un texto XML --- Non un DOCUMENTO ---
+     * @return 
+     */
     public String toXMLString() {
         StringBuilder xml=new StringBuilder("<datos_cliente>");
         xml.append("<id>").append(dni).append("</id>");
@@ -144,12 +148,25 @@ public class Client  {
         return xml.toString();
     }
     
+    /**
+     * Crea o documento XML a partir do texto XML
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException 
+     */
     public Document toXMLDocument() throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilder doc=DocumentBuilderFactory.newInstance().newDocumentBuilder();
         StringReader sr=new StringReader(toXMLString());
         return doc.parse(new InputSource(sr));
     }
     
+    
+    /**
+     * Crea o documento XML nodo por nodo
+     * @return
+     * @throws ParserConfigurationException 
+     */
     public Document buildXMLDocument() throws ParserConfigurationException {
         DocumentBuilder db=DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc=db.newDocument();
@@ -184,6 +201,8 @@ public class Client  {
         
         return doc;
     }
+    
+    // Métodos Auxiliares
         
     private static String cleanQuotes(String str) throws ScanException {
         Pattern pattern = Pattern.compile("\"([^\"]*)\"");
