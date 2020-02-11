@@ -21,15 +21,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class Client  {
-    private String dni;
-    private String firstname;
-    private String lastname;
+    private final String dni;
+    private final String firstname;
+    private final String lastname;
     TreeMap <Long,String> localPhones;
     TreeMap <Long,String> internationalPhones;
     HashMap <String,String> emails;
     
     public Client(String dni,String firstname,String lastname) throws Exception {
-        if (!verificaDNI(dni)) throw new Exception("DNI number not valid");
+        //if (!verificaDNI(dni)) throw new Exception("DNI number not valid");
         Comparator comparePhones=new PhoneComparator();
         this.dni=dni;
         this.firstname=firstname;
