@@ -20,7 +20,7 @@ public class ImportClienteCSVToXML {
     public static void main(String[] args) {
         // TODO code application logic here
         String[] clients= {
-            "X12345678F,\"nombreA\",\"apellidosA \",(91)23456789 ,+(82)12345678, 612345678,test@TEST.com,prueba@prueba.com",
+            "X12345678F,\"nombreA\",\"apellidosA \",(91)23456789 ,otest.mimail@error.com,+(82)12345678, 612345678,test@TEST.com,prueba@prueba.com",
             "12345678Z,\"nombreB \",\"apellidosB \", prueba@prueba.com,(952)333333,test@test.com ,952333333,test@TEST.com",
         };
         for(String str: clients) {

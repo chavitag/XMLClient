@@ -24,9 +24,9 @@ public class Client  {
     private final String dni;
     private final String firstname;
     private final String lastname;
-    TreeMap <Long,String> localPhones;
+    TreeMap <Long,String> localPhones;  // O TreeMap permanece ordeado
     TreeMap <Long,String> internationalPhones;
-    HashMap <String,String> emails;
+    HashMap <String,String> emails; // Os emails non necesitan estar ordeados, pero deben ser únicos
     
     public Client(String dni,String firstname,String lastname) throws Exception {
         //if (!verificaDNI(dni)) throw new Exception("DNI number not valid");
@@ -34,7 +34,7 @@ public class Client  {
         this.dni=dni;
         this.firstname=firstname;
         this.lastname=lastname;
-        localPhones=new TreeMap <>(comparePhones);
+        localPhones=new TreeMap <>(comparePhones);  // comparePhones ordea de maior a menor.
         internationalPhones=new TreeMap <>(comparePhones);
         emails=new HashMap <> ();
     }
@@ -205,6 +205,8 @@ public class Client  {
     // Métodos Auxiliares
         
     private static String cleanQuotes(String str) throws ScanException {
+        // O patrón captura todo o que esté entre comiñas, e devolve a primeira captura.
+        // --> captura todo o que esté despois de abrir comiñas, que non sexa unha comiña e teña detrás outras comiñas
         Pattern pattern = Pattern.compile("\"([^\"]*)\"");
         Matcher matcher = pattern.matcher(str);
         if (!matcher.find()) throw new ScanException("Error in quoted String "+str);
@@ -212,19 +214,28 @@ public class Client  {
     }
     
     private static boolean isEmail(String field) {
-        Pattern pattern=Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", 
+        // Analiza que no comenzo teña unha ou varias letras A-Z ou números 0-9 ou punto, seguido dunha @, letras
+        // A-Z ou números 0-9 ou puntos, seguido dun punto e dunha extensión alfabética A-Z de 2 a 6 letras.
+        // NON diferencia entre minúsculas e maiúsculas
+        Pattern pattern=Pattern.compile("^[A-Z0-9.]+@[A-Z0-9.]+\\.[A-Z]{2,6}$", 
                                          Pattern.CASE_INSENSITIVE);
         Matcher matcher=pattern.matcher(field);
         return matcher.find();
     }
         
     private static boolean isPhoneNumber(String field) {
+        // Comenzo de liña pode levar ou non un +.  (?: indica un grupo, pero non o "captura", como
+        // no caso de coller o que está entre as comiñas en cleanQuotes. polo tanto indico que pode existir
+        // ou non un conxunto de números entre paréntese. O seguinte grupo, que tampouco captura, sería un número 
+        // entre 6 e 14 díxitos, e logo un díxito mais antes de rematar a cadea.
+        // 
         Pattern pattern=Pattern.compile("^\\+?(?:\\([0-9]+\\))?(?:[0-9]?){6,14}[0-9]$");
         Matcher matcher=pattern.matcher(field);
         return matcher.find();
     }
 
     private static boolean isLocalPhoneNumber(String field) {
+        // Si comenza por +, non é un número local...
         if (field.charAt(0)=='+') return false;
         return true;
     }
