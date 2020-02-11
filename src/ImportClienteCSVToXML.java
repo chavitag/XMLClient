@@ -14,7 +14,7 @@ import org.w3c.dom.Document;
  */
 public class ImportClienteCSVToXML {
 
-    /** TEST
+    /** 
      * @param args the command line arguments
      */
     public static void main(String[] args) {
